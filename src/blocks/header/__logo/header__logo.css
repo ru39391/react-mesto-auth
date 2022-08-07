@@ -5,3 +5,9 @@
     object-fit: cover;
   }
 }
+
+@media (max-width:575px) {
+  .header__logo {
+    order: 2;
+  }
+}

@@ -1,12 +1,12 @@
 import React from 'react';
-import modalClose from '../images/modal/modal__close.svg';
+import iconClose from '../images/icons/icon-close.svg';
 
 function PopupWithForm({className, formName, title, btnCaption, children, isOpen, onClose, onSubmit}) {
   return (
     <div className={`modal modal_target_${className} ${isOpen && 'modal_visible'}`}>
       <div className="modal__content">
         <button className="modal__close" type="button" onClick={onClose}>
-          <img className="modal__close-icon" src={modalClose} alt="Закрыть всплывающее окно" />
+          <img className="modal__close-icon" src={iconClose} alt="Закрыть всплывающее окно" />
         </button>
         <h2 className="modal__title">{title}</h2>
 

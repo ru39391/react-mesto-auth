@@ -1,0 +1,9 @@
+.form_offset_bottom {
+  margin-bottom: 112px;
+}
+
+@media (max-width:575px) {
+  .form_container {
+    margin-bottom: 77px;
+  }
+}

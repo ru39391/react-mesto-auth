@@ -4,13 +4,18 @@ import Main from './Main';
 import Footer from './Footer';
 import ImagePopup from './ImagePopup';
 import PopupWithForm from './PopupWithForm';
+import PopupWithoutForm from './PopupWithoutForm';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
+import Login from './Login';
+import Register from './Register';
 
 import api from "../utils/api";
 import CurrentUserContext from '../contexts/CurrentUserContext';
 import profileAvatar from '../images/profile/profile__avatar.png';
+import iconError from '../images/icons/icon-error.svg';
+import iconSuccess from '../images/icons/icon-success.svg';
 
 function App() {
   const [CurrentUser, setCurrentUser] = React.useState({
@@ -127,6 +132,10 @@ function App() {
   return (
     <CurrentUserContext.Provider value={CurrentUser}>
       <Header />
+      {/*
+      <Login classMod="form_offset_bottom" formName="signin" title="Вход" btnCaption="Войти" />
+      <Register formName="signup" title="Регистрация" btnCaption="Зарегистрироваться" />
+      */}
       <Main cards={Cards} onEditProfile={handleEditProfileClick} onEditAvatar={handleEditAvatarClick} onAddPlace={handleAddPlaceClick} onCardClick={handleCardClick} onCardLike={handleCardLike} onCardDelete={handleCardDelete} />
       <Footer />
       <ImagePopup card={SelectedCard} onClose={closeAllPopups} />
@@ -134,6 +143,7 @@ function App() {
       <EditAvatarPopup isOpen={IsEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
       <AddPlacePopup isOpen={IsAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
       <PopupWithForm title="Вы уверены?" className="remove-card" formName="removeCard" btnCaption="Да" />
+      <PopupWithoutForm title="Что-то пошло не так! Попробуйте ещё раз." className="success" icon={iconError} />
     </CurrentUserContext.Provider>
   );
 }
