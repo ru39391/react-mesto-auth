@@ -1,10 +1,10 @@
 import React from 'react';
+import { NavLink, Route, Switch } from "react-router-dom";
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import ImagePopup from './ImagePopup';
 import PopupWithForm from './PopupWithForm';
-import PopupWithoutForm from './PopupWithoutForm';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
@@ -14,8 +14,8 @@ import Register from './Register';
 import api from "../utils/api";
 import CurrentUserContext from '../contexts/CurrentUserContext';
 import profileAvatar from '../images/profile/profile__avatar.png';
-import iconError from '../images/icons/icon-error.svg';
-import iconSuccess from '../images/icons/icon-success.svg';
+import iconShow from '../images/icons/icon-show.svg';
+import iconClose from '../images/icons/icon-close.svg';
 
 function App() {
   const [CurrentUser, setCurrentUser] = React.useState({
@@ -131,19 +131,40 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={CurrentUser}>
-      <Header />
-      {/*
-      <Login classMod="form_offset_bottom" formName="signin" title="Вход" btnCaption="Войти" />
-      <Register formName="signup" title="Регистрация" btnCaption="Зарегистрироваться" />
-      */}
-      <Main cards={Cards} onEditProfile={handleEditProfileClick} onEditAvatar={handleEditAvatarClick} onAddPlace={handleAddPlaceClick} onCardClick={handleCardClick} onCardLike={handleCardLike} onCardDelete={handleCardDelete} />
-      <Footer />
-      <ImagePopup card={SelectedCard} onClose={closeAllPopups} />
-      <EditProfilePopup isOpen={IsEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
-      <EditAvatarPopup isOpen={IsEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
-      <AddPlacePopup isOpen={IsAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
-      <PopupWithForm title="Вы уверены?" className="remove-card" formName="removeCard" btnCaption="Да" />
-      <PopupWithoutForm title="Что-то пошло не так! Попробуйте ещё раз." className="success" icon={iconError} />
+        <Switch>
+          <Route exact path="/">
+            <Header>
+              <div className="header__meta">
+                <span className="header__link header__link_fs_default">email@mail.com</span>
+                <button className="header__link header__link_fs_default header__link_color_light" type="button">Выйти</button>
+              </div>
+
+              <button className="header__toggler" type="button">
+                <img className="header__toggler-icon" src={iconShow} alt="Показать меню" />
+                <img className="header__toggler-icon header__toggler-icon_invisible" src={iconClose} alt="Скрыть меню" />
+              </button>
+            </Header>
+            <Main cards={Cards} onEditProfile={handleEditProfileClick} onEditAvatar={handleEditAvatarClick} onAddPlace={handleAddPlaceClick} onCardClick={handleCardClick} onCardLike={handleCardLike} onCardDelete={handleCardDelete} />
+            <Footer />
+            <ImagePopup card={SelectedCard} onClose={closeAllPopups} />
+            <EditProfilePopup isOpen={IsEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
+            <EditAvatarPopup isOpen={IsEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
+            <AddPlacePopup isOpen={IsAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
+            <PopupWithForm title="Вы уверены?" className="remove-card" formName="removeCard" btnCaption="Да" />
+          </Route>
+          <Route exact path="/sign-up">
+            <Header>
+              <NavLink to="/sign-in" className="header__link">Войти</NavLink>
+            </Header>
+            <Register classMod="" formName="signup" title="Регистрация" btnCaption="Зарегистрироваться" />
+          </Route>
+          <Route exact path="/sign-in">
+            <Header>
+              <NavLink to="/sign-up" className="header__link">Регистрация</NavLink>
+            </Header>
+            <Login classMod="form_offset_bottom" formName="signin" title="Вход" btnCaption="Войти" />
+          </Route>
+        </Switch>
     </CurrentUserContext.Provider>
   );
 }

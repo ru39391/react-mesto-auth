@@ -1,7 +1,7 @@
 import React from 'react';
 import iconClose from '../images/icons/icon-close.svg';
 
-function PopupWithoutForm({className, title, icon, isOpen, onClose}) {
+function Popup({className, title, icon, isOpen, onClose}) {
   return (
     <div className={`modal modal_target_${className} ${isOpen && 'modal_visible'}`}>
       <div className="modal__content modal__content_display_flex">
@@ -17,4 +17,4 @@ function PopupWithoutForm({className, title, icon, isOpen, onClose}) {
   );
 }
 
-export default PopupWithoutForm;
+export default Popup;

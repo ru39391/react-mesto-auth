@@ -1,20 +1,20 @@
 import React from 'react';
-import removeBtnIcon from '../images/photo-wrap/photo-wrap__remove-button.svg';
+import iconClose from '../images/icons/icon-close.svg';
 
-function RemoveBtn({card, onCardDelete}) {
-  function handleDeleteClick() {
-    onCardDelete(card);
-  }
-
+function InfoTooltip({className, title, icon, isOpen, onClose}) {
   return (
-    <button className="photo-wrap__remove-button" type="button" onClick={handleDeleteClick}>
-      <img
-        className="photo-wrap__remove-icon"
-        src={removeBtnIcon}
-        alt="Удалить"
-      />
-    </button>
+    <div className={`modal modal_target_${className} ${isOpen && 'modal_visible'}`}>
+      <div className="modal__content modal__content_display_flex">
+        <button className="modal__close" type="button" onClick={onClose}>
+          <img className="modal__close-icon" src={iconClose} alt="Закрыть всплывающее окно" />
+        </button>
+        <div className="modal__response">
+          <img className="modal__response-icon" src={icon} alt={title} />
+        </div>
+        <h2 className="modal__title modal__title_align_center modal__title_mb_none">{title}</h2>
+      </div>
+    </div>
   );
 }
 
-export default RemoveBtn;
+export default InfoTooltip;

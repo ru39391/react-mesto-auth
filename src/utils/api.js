@@ -2,8 +2,9 @@ import React from 'react';
 import {access} from './constants';
 
 class Api extends React.Component {
-  constructor({baseUrl, headers}) {
+  constructor({authUrl, baseUrl, headers}) {
     super();
+    this._authUrl = authUrl;
     this._baseUrl = baseUrl;
     this._headers = headers;
   }
@@ -84,9 +85,25 @@ class Api extends React.Component {
     })
       .then(res => this._checkResponse(res, 'Ошибка при обновлении изображения пользователя'));
   }
+
+  signupUser(data) {
+    //console.log(data);
+    return fetch(`${this._authUrl}/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        password: data.password,
+        email: data.email
+      })
+    })
+      .then(res => this._checkResponse(res, 'Ошибка при регистрации пользователя'));
+  }
 }
 
 const api = new Api({
+  authUrl: access.authUrl,
   baseUrl: access.baseUrl,
   headers: {
     authorization: access.token,
