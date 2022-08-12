@@ -2,25 +2,22 @@ import React from 'react';
 import UserForm from './UserForm';
 import api from "../utils/api";
 import {tooltipConfig} from '../utils/constants';
+import TooltipContext from '../contexts/TooltipContext';
 
-function Register({classMod, formName, title, btnCaption}) {
-  const [Tooltip, setTooltip] = React.useState({
-    className: '',
-    title: '',
-    icon: ''
-  });
-  const [IsTooltipOpen, setTooltipVisibility] = React.useState(false);
+function Register({classMod, formName, title, btnCaption, isOpen, onHandleVisibility, onSetTooltipParams}) {
+  const tooltip = React.useContext(TooltipContext);
+
   const refs = {
     password: React.useRef(''),
     email: React.useRef('')
   };
+  
+  function setTooltipVisible() {
+    onHandleVisibility(true);
+  }
 
-  function handleTooltipVisibility() {
-    if(IsTooltipOpen) {
-      setTooltipVisibility(false);
-    } else {
-      setTooltipVisibility(true);
-    }
+  function setTooltipData(data) {
+    onSetTooltipParams(data);
   }
 
   function handleChange(e) {
@@ -37,21 +34,22 @@ function Register({classMod, formName, title, btnCaption}) {
     })
       .then(res => {
         console.log(res);
-        setTooltip(tooltipConfig.success);
-        setTooltipVisibility(true);
+        setTooltipData(tooltipConfig.success);
+        setTooltipVisible();
         Object.keys(refs).forEach(refsItem => {
           refs[refsItem].current.value = '';
         });
       })
       .catch(err => {
         console.log(err);
-        setTooltip(tooltipConfig.error);
-        setTooltipVisibility(true);
+        setTooltipData(tooltipConfig.error);
+        setTooltipVisible();
+        console.log(refs[email]);
       });
   }
 
   return (
-    <UserForm classMod={classMod} formName={formName} title={title} btnCaption={btnCaption} tooltip={Tooltip} isOpen={IsTooltipOpen} onClose={handleTooltipVisibility} onSubmit={handleSubmit}>
+    <UserForm classMod={classMod} formName={formName} title={title} btnCaption={btnCaption} tooltip={tooltip} isOpen={isOpen} onHandleVisibility={onHandleVisibility} onSubmit={handleSubmit}>
       <div className="form__field-holder">
         <input className="form__field form__field_color_white" name="email" minLength="2" type="email" placeholder="Email" ref={refs.email} onChange={handleChange} required />
         <div className="form__error email-error"></div>

@@ -2,7 +2,7 @@ import React from 'react';
 import InfoTooltip from './InfoTooltip';
 import UserFormFooterText from './UserFormFooterText';
 
-function UserForm({classMod, formName, title, btnCaption, children, tooltip, isOpen, onClose, onSubmit}) {
+function UserForm({classMod, formName, title, btnCaption, children, tooltip, isOpen, onHandleVisibility, onSubmit}) {
   return (
     <>
       <form className={`form form_container ${classMod}`} name={formName} onSubmit={onSubmit} action="#">
@@ -20,7 +20,7 @@ function UserForm({classMod, formName, title, btnCaption, children, tooltip, isO
           </div>
         </div>
       </form>
-      <InfoTooltip title={tooltip.title} className={tooltip.className} icon={tooltip.icon} isOpen={isOpen} onClose={onClose} />
+      <InfoTooltip title={tooltip.title} className={tooltip.className} icon={tooltip.icon} isOpen={isOpen} onHandleVisibility={onHandleVisibility} />
     </>
   );
 }

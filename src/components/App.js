@@ -13,6 +13,7 @@ import Register from './Register';
 
 import api from "../utils/api";
 import CurrentUserContext from '../contexts/CurrentUserContext';
+import TooltipContext from '../contexts/TooltipContext';
 import profileAvatar from '../images/profile/profile__avatar.png';
 import iconShow from '../images/icons/icon-show.svg';
 import iconClose from '../images/icons/icon-close.svg';
@@ -41,6 +42,24 @@ function App() {
         console.log(err);
       });
   }, []);
+
+  const [Tooltip, setTooltip] = React.useState({
+    className: '',
+    title: '',
+    icon: ''
+  });
+  function setTooltipParams(data) {
+    setTooltip(data);
+  }
+
+  const [IsTooltipOpen, setTooltipVisibility] = React.useState(false);
+  function toggleTooltipVisibility() {
+    if(IsTooltipOpen) {
+      setTooltipVisibility(false);
+    } else {
+      setTooltipVisibility(true);
+    }
+  }
 
   const [IsEditProfilePopupOpen, setEditProfilePopupActive] = React.useState(false);
   function handleEditProfileClick() {
@@ -155,8 +174,10 @@ function App() {
           <Route exact path="/sign-up">
             <Header>
               <NavLink to="/sign-in" className="header__link">Войти</NavLink>
-            </Header>
-            <Register classMod="" formName="signup" title="Регистрация" btnCaption="Зарегистрироваться" />
+            </Header>            
+            <TooltipContext.Provider value={Tooltip}>
+              <Register classMod="" formName="signup" title="Регистрация" btnCaption="Зарегистрироваться" isOpen={IsTooltipOpen} onHandleVisibility={toggleTooltipVisibility} onSetTooltipParams={setTooltipParams} />
+            </TooltipContext.Provider>
           </Route>
           <Route exact path="/sign-in">
             <Header>
