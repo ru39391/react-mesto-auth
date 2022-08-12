@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, Route, Switch } from "react-router-dom";
+import { NavLink, Route, Switch, useHistory, Redirect } from "react-router-dom";
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -9,6 +9,7 @@ import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import Auth from './Auth';
+import ProtectedRoute from './ProtectedRoute';
 
 import api from "../utils/api";
 import {tooltipConfig, signupConfig, signinConfig} from '../utils/constants';
@@ -19,6 +20,7 @@ import iconShow from '../images/icons/icon-show.svg';
 import iconClose from '../images/icons/icon-close.svg';
 
 function App() {
+  const history = useHistory();
   const [CurrentUser, setCurrentUser] = React.useState({
     id: null,
     name: 'Жак-Ив Кусто',
@@ -141,6 +143,12 @@ function App() {
   });
   const [IsTooltipOpen, setTooltipVisibility] = React.useState(false);
 
+  /* logged status params */
+  const [IsLoggedIn, setLoggedIn] = React.useState(false);
+  function handleLoggedIn() {
+    setLoggedIn(true);
+  };
+
   /* tooltip handlers */
   function setTooltipParams(data) {
     setTooltip(data);
@@ -179,6 +187,12 @@ function App() {
     api.authUser(data, signinConfig)
       .then(res => {
         console.log(res);
+        if(res.token) {
+          const { token } = res;
+          handleLoggedIn();
+          localStorage.setItem('token', token);
+          history.push('/');
+        }
       })
       .catch(err => {
         console.log(err);
@@ -190,7 +204,7 @@ function App() {
   return (
     <CurrentUserContext.Provider value={CurrentUser}>
         <Switch>
-          <Route exact path="/">
+          <ProtectedRoute exact path="/" isLoggedIn={IsLoggedIn}>
             <Header>
               <div className="header__meta">
                 <span className="header__link header__link_fs_default">email@mail.com</span>
@@ -209,7 +223,7 @@ function App() {
             <EditAvatarPopup isOpen={IsEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
             <AddPlacePopup isOpen={IsAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
             <PopupWithForm title="Вы уверены?" className="remove-card" formName="removeCard" btnCaption="Да" />
-          </Route>
+          </ProtectedRoute>
           <Route exact path="/sign-up">
             <Header>
               <NavLink to="/sign-in" className="header__link">Войти</NavLink>
@@ -225,6 +239,9 @@ function App() {
             <TooltipContext.Provider value={Tooltip}>
               <Auth classMod="form_offset_bottom" formName="signin" title="Вход" btnCaption="Войти" isOpen={IsTooltipOpen} onUpdateTooltip={handleSigninTooltip} onHandleVisibility={toggleTooltipVisibility} />
             </TooltipContext.Provider>
+          </Route>
+          <Route>
+            {IsLoggedIn ? (<Redirect to="/" />) : (<Redirect to="/sign-in" />)}
           </Route>
         </Switch>
     </CurrentUserContext.Provider>

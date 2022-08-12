@@ -99,6 +99,17 @@ class Api extends React.Component {
     })
       .then(res => this._checkResponse(res, config.errorAlert));
   }
+
+  checkUser() {
+    return fetch(`${this._authUrl}/users/me`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization' : `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+      .then(res => this._checkResponse(res, 'Ошибка'));
+  }
 }
 
 const api = new Api({

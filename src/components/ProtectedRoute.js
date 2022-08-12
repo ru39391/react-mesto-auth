@@ -1,20 +1,14 @@
-import React from 'react';
-import removeBtnIcon from '../images/photo-wrap/photo-wrap__remove-button.svg';
+import React from "react";
+import { Route, Redirect } from "react-router-dom";
 
-function RemoveBtn({card, onCardDelete}) {
-  function handleDeleteClick() {
-    onCardDelete(card);
-  }
-
+const ProtectedRoute = ({ component: Component, ...props }) => {
   return (
-    <button className="photo-wrap__remove-button" type="button" onClick={handleDeleteClick}>
-      <img
-        className="photo-wrap__remove-icon"
-        src={removeBtnIcon}
-        alt="Удалить"
-      />
-    </button>
+    <Route>
+      {() =>
+        props.isLoggedIn ? <Component {...props} /> : <Redirect to="./sign-in" />
+      }
+    </Route>
   );
-}
+};
 
-export default RemoveBtn;
+export default ProtectedRoute;

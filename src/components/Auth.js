@@ -29,7 +29,7 @@ function Auth({classMod, formName, title, btnCaption, isOpen, onHandleVisibility
     Object.keys(refs).forEach(refsItem => {
       refs[refsItem].current.value = '';
     });
-  }, [refs, isOpen]); 
+  }, [refs]);
 
   return (
     <>
