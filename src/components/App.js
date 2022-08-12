@@ -177,7 +177,7 @@ function App() {
   function signUp(data) {
     api.authUser(data, signupConfig)
       .then(res => {
-        console.log(res);
+        //console.log(res);
         setTooltipParams(tooltipConfig.success);
         toggleTooltipVisibility();
       })
@@ -191,7 +191,7 @@ function App() {
   function signIn(data) {
     api.authUser(data, signinConfig)
       .then(res => {
-        console.log(res);
+        //console.log(res);
         if(res.token) {
           const { token } = res;
           localStorage.setItem('token', token);
@@ -213,11 +213,11 @@ function App() {
 
   function checkToken() {
     const jwt = localStorage.getItem('token');
-    console.log(jwt);
+    //console.log(jwt);
     if(jwt) {
       api.getUserToken()
         .then(res => {
-          console.log(res.data);
+          //console.log(res.data);
           const {_id, email} = res.data;
           handleUserData({
             id: _id,
