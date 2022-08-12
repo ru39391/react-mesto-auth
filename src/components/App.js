@@ -12,6 +12,7 @@ import Login from './Login';
 import Register from './Register';
 
 import api from "../utils/api";
+import {tooltipConfig} from '../utils/constants';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 import TooltipContext from '../contexts/TooltipContext';
 import profileAvatar from '../images/profile/profile__avatar.png';
@@ -43,24 +44,7 @@ function App() {
       });
   }, []);
 
-  const [Tooltip, setTooltip] = React.useState({
-    className: '',
-    title: '',
-    icon: ''
-  });
-  function setTooltipParams(data) {
-    setTooltip(data);
-  }
-
-  const [IsTooltipOpen, setTooltipVisibility] = React.useState(false);
-  function toggleTooltipVisibility() {
-    if(IsTooltipOpen) {
-      setTooltipVisibility(false);
-    } else {
-      setTooltipVisibility(true);
-    }
-  }
-
+  /* popup handlers */
   const [IsEditProfilePopupOpen, setEditProfilePopupActive] = React.useState(false);
   function handleEditProfileClick() {
     setEditProfilePopupActive(true);
@@ -88,6 +72,7 @@ function App() {
     setSelectedCard(null);
   }  
   
+  /* user handlers */
   function handleUpdateUser(data) {
     api.setUserData(data)
       .then(res => {
@@ -111,6 +96,7 @@ function App() {
       });
   }
 
+  /* card handlers */
   function handleAddPlaceSubmit(data) {
     api.addCard(data)
       .then(res => {
@@ -148,6 +134,41 @@ function App() {
       });
   }
 
+  /* tooltip params */
+  const [Tooltip, setTooltip] = React.useState({
+    className: '',
+    title: '',
+    icon: ''
+  });
+  const [IsTooltipOpen, setTooltipVisibility] = React.useState(false);
+
+  /* tooltip handlers */
+  function setTooltipParams(data) {
+    setTooltip(data);
+  }
+
+  function toggleTooltipVisibility() {
+    if(IsTooltipOpen) {
+      setTooltipVisibility(false);
+    } else {
+      setTooltipVisibility(true);
+    }
+  }
+
+  function handleTooltip(data) {
+    api.signupUser(data)
+      .then(res => {
+        console.log(res);
+        setTooltipParams(tooltipConfig.success);
+        toggleTooltipVisibility();
+      })
+      .catch(err => {
+        console.log(err);
+        setTooltipParams(tooltipConfig.error);
+        toggleTooltipVisibility();
+      });
+  }
+
   return (
     <CurrentUserContext.Provider value={CurrentUser}>
         <Switch>
@@ -176,7 +197,7 @@ function App() {
               <NavLink to="/sign-in" className="header__link">Войти</NavLink>
             </Header>            
             <TooltipContext.Provider value={Tooltip}>
-              <Register classMod="" formName="signup" title="Регистрация" btnCaption="Зарегистрироваться" isOpen={IsTooltipOpen} onHandleVisibility={toggleTooltipVisibility} onSetTooltipParams={setTooltipParams} />
+              <Register classMod="" formName="signup" title="Регистрация" btnCaption="Зарегистрироваться" isOpen={IsTooltipOpen} onUpdateTooltip={handleTooltip} onHandleVisibility={toggleTooltipVisibility} />
             </TooltipContext.Provider>
           </Route>
           <Route exact path="/sign-in">

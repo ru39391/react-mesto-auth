@@ -1,24 +1,14 @@
 import React from 'react';
 import UserForm from './UserForm';
-import api from "../utils/api";
-import {tooltipConfig} from '../utils/constants';
 import TooltipContext from '../contexts/TooltipContext';
 
-function Register({classMod, formName, title, btnCaption, isOpen, onHandleVisibility, onSetTooltipParams}) {
+function Register({classMod, formName, title, btnCaption, isOpen, onHandleVisibility, onUpdateTooltip}) {
   const tooltip = React.useContext(TooltipContext);
 
   const refs = {
     password: React.useRef(''),
     email: React.useRef('')
   };
-  
-  function setTooltipVisible() {
-    onHandleVisibility(true);
-  }
-
-  function setTooltipData(data) {
-    onSetTooltipParams(data);
-  }
 
   function handleChange(e) {
     const {name, value} = e.target;
@@ -28,25 +18,17 @@ function Register({classMod, formName, title, btnCaption, isOpen, onHandleVisibi
   function handleSubmit(e){
     e.preventDefault()
     const { password, email } = refs;
-    api.signupUser({
+    onUpdateTooltip({
       password: password,
       email: email
-    })
-      .then(res => {
-        console.log(res);
-        setTooltipData(tooltipConfig.success);
-        setTooltipVisible();
-        Object.keys(refs).forEach(refsItem => {
-          refs[refsItem].current.value = '';
-        });
-      })
-      .catch(err => {
-        console.log(err);
-        setTooltipData(tooltipConfig.error);
-        setTooltipVisible();
-        console.log(refs[email]);
-      });
+    });
   }
+  
+  React.useEffect(() => {
+    Object.keys(refs).forEach(refsItem => {
+      refs[refsItem].current.value = '';
+    });
+  }, [refs, isOpen]); 
 
   return (
     <UserForm classMod={classMod} formName={formName} title={title} btnCaption={btnCaption} tooltip={tooltip} isOpen={isOpen} onHandleVisibility={onHandleVisibility} onSubmit={handleSubmit}>
