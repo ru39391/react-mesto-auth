@@ -100,7 +100,7 @@ class Api extends React.Component {
       .then(res => this._checkResponse(res, config.errorAlert));
   }
 
-  checkUser() {
+  getUserToken() {
     return fetch(`${this._authUrl}/users/me`, {
       method: 'GET',
       headers: {

@@ -149,27 +149,32 @@ function App() {
     setLoggedIn(true);
   };
 
+  const [UserData, setUserData] = React.useState({});
+  function handleUserData(data) {
+    setUserData(data);
+  };
+
   /* tooltip handlers */
   function setTooltipParams(data) {
     setTooltip(data);
   }
 
-  function changeRoute(data) {
+  function redirectToSignin(data) {
     if(data.className === 'success') {
-      console.log('Вы будуете перенаправлены');
+      history.push('/sign-in');
     }
   }
 
   function toggleTooltipVisibility() {
     if(IsTooltipOpen) {
-      changeRoute(Tooltip);
+      redirectToSignin(Tooltip);
       setTooltipVisibility(false);
     } else {
       setTooltipVisibility(true);
     }
   }
 
-  function handleSignupTooltip(data) {
+  function signUp(data) {
     api.authUser(data, signupConfig)
       .then(res => {
         console.log(res);
@@ -183,14 +188,14 @@ function App() {
       });
   }
 
-  function handleSigninTooltip(data) {
+  function signIn(data) {
     api.authUser(data, signinConfig)
       .then(res => {
         console.log(res);
         if(res.token) {
           const { token } = res;
-          handleLoggedIn();
           localStorage.setItem('token', token);
+          handleLoggedIn();
           history.push('/');
         }
       })
@@ -201,14 +206,44 @@ function App() {
       });
   }
 
+  function signOut(){
+    localStorage.removeItem('token');
+    history.push('/sign-in');
+  }
+
+  function checkToken() {
+    const jwt = localStorage.getItem('token');
+    console.log(jwt);
+    if(jwt) {
+      api.getUserToken()
+        .then(res => {
+          console.log(res.data);
+          const {_id, email} = res.data;
+          handleUserData({
+            id: _id,
+            email: email
+          });
+          handleLoggedIn();
+          history.push('/');
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  }
+
+  React.useEffect(() => {
+    checkToken();
+  }, [IsLoggedIn]);
+
   return (
     <CurrentUserContext.Provider value={CurrentUser}>
         <Switch>
           <ProtectedRoute exact path="/" isLoggedIn={IsLoggedIn}>
             <Header>
               <div className="header__meta">
-                <span className="header__link header__link_fs_default">email@mail.com</span>
-                <button className="header__link header__link_fs_default header__link_color_light" type="button">Выйти</button>
+                <a className="header__link header__link_fs_default" href={`mailto:${UserData.email}`}>{UserData.email}</a>
+                <button className="header__link header__link_fs_default header__link_color_light" type="button" onClick={signOut}>Выйти</button>
               </div>
 
               <button className="header__toggler" type="button">
@@ -229,7 +264,7 @@ function App() {
               <NavLink to="/sign-in" className="header__link">Войти</NavLink>
             </Header>
             <TooltipContext.Provider value={Tooltip}>
-              <Auth classMod="" formName="signup" title="Регистрация" btnCaption="Зарегистрироваться" isOpen={IsTooltipOpen} onUpdateTooltip={handleSignupTooltip} onHandleVisibility={toggleTooltipVisibility} />
+              <Auth classMod="" formName="signup" title="Регистрация" btnCaption="Зарегистрироваться" isOpen={IsTooltipOpen} onUpdateTooltip={signUp} onHandleVisibility={toggleTooltipVisibility} />
             </TooltipContext.Provider>
           </Route>
           <Route exact path="/sign-in">
@@ -237,7 +272,7 @@ function App() {
               <NavLink to="/sign-up" className="header__link">Регистрация</NavLink>
             </Header>
             <TooltipContext.Provider value={Tooltip}>
-              <Auth classMod="form_offset_bottom" formName="signin" title="Вход" btnCaption="Войти" isOpen={IsTooltipOpen} onUpdateTooltip={handleSigninTooltip} onHandleVisibility={toggleTooltipVisibility} />
+              <Auth classMod="form_offset_bottom" formName="signin" title="Вход" btnCaption="Войти" isOpen={IsTooltipOpen} onUpdateTooltip={signIn} onHandleVisibility={toggleTooltipVisibility} />
             </TooltipContext.Provider>
           </Route>
           <Route>
