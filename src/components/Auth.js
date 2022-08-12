@@ -1,5 +1,6 @@
 import React from 'react';
-import UserForm from './UserForm';
+import InfoTooltip from './InfoTooltip';
+import AuthFormFooterText from './AuthFormFooterText';
 import TooltipContext from '../contexts/TooltipContext';
 
 function Auth({classMod, formName, title, btnCaption, isOpen, onHandleVisibility, onUpdateTooltip}) {
@@ -31,16 +32,31 @@ function Auth({classMod, formName, title, btnCaption, isOpen, onHandleVisibility
   }, [refs, isOpen]); 
 
   return (
-    <UserForm classMod={classMod} formName={formName} title={title} btnCaption={btnCaption} tooltip={tooltip} isOpen={isOpen} onHandleVisibility={onHandleVisibility} onSubmit={handleSubmit}>
-      <div className="form__field-holder">
-        <input className="form__field form__field_color_white" name="email" minLength="2" type="email" placeholder="Email" ref={refs.email} onChange={handleChange} required />
-        <div className="form__error email-error"></div>
-      </div>
-      <div className="form__field-holder">
-        <input className="form__field form__field_color_white" name="password" minLength="9" type="password" placeholder="Пароль" ref={refs.password} onChange={handleChange} required />
-        <div className="form__error password-error"></div>
-      </div>
-    </UserForm>
+    <>
+      <form className={`form form_container ${classMod}`} name={formName} onSubmit={handleSubmit} action="#">
+        <div className="form__wrapper">
+          <div className="form__title form__title_color_white">{title}</div>
+          <fieldset className="form__body form__body_height_max">
+            <div className="form__field-holder">
+              <input className="form__field form__field_color_white" name="email" minLength="2" type="email" placeholder="Email" ref={refs.email} onChange={handleChange} required />
+              <div className="form__error email-error"></div>
+            </div>
+            <div className="form__field-holder">
+              <input className="form__field form__field_color_white" name="password" minLength="9" type="password" placeholder="Пароль" ref={refs.password} onChange={handleChange} required />
+              <div className="form__error password-error"></div>
+            </div>
+          </fieldset>
+          <div className="form__footer">
+            <button className="form__button form__button_bg_white" type="submit">
+              <span className="form__button-caption">{btnCaption}</span>
+              <span className="form__button-loading"></span>
+            </button>
+            {formName === `signup` && <AuthFormFooterText /> }
+          </div>
+        </div>
+      </form>
+      <InfoTooltip tooltip={tooltip} isOpen={isOpen} onHandleVisibility={onHandleVisibility} />
+    </>
   );
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-function UserFormFooterText() {
+function AuthFormFooterText() {
   return (
     <p className="form__footer-text">
       Уже зарегистрированы? <NavLink to="/sign-in" className="form__footer-link">Войти</NavLink>
@@ -9,4 +9,4 @@ function UserFormFooterText() {
   );
 }
 
-export default UserFormFooterText;
+export default AuthFormFooterText;
