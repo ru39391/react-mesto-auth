@@ -86,9 +86,8 @@ class Api extends React.Component {
       .then(res => this._checkResponse(res, 'Ошибка при обновлении изображения пользователя'));
   }
 
-  signupUser(data) {
-    //console.log(data);
-    return fetch(`${this._authUrl}/signup`, {
+  authUser(data, config) {
+    return fetch(`${this._authUrl}/${config.endPoint}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -98,7 +97,7 @@ class Api extends React.Component {
         email: data.email
       })
     })
-      .then(res => this._checkResponse(res, 'Ошибка при регистрации пользователя'));
+      .then(res => this._checkResponse(res, config.errorAlert));
   }
 }
 

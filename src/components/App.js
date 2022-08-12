@@ -8,11 +8,10 @@ import PopupWithForm from './PopupWithForm';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
-import Login from './Login';
-import Register from './Register';
+import Auth from './Auth';
 
 import api from "../utils/api";
-import {tooltipConfig} from '../utils/constants';
+import {tooltipConfig, signupConfig, signinConfig} from '../utils/constants';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 import TooltipContext from '../contexts/TooltipContext';
 import profileAvatar from '../images/profile/profile__avatar.png';
@@ -147,20 +146,39 @@ function App() {
     setTooltip(data);
   }
 
+  function changeRoute(data) {
+    if(data.className === 'success') {
+      console.log('Вы будуете перенаправлены');
+    }
+  }
+
   function toggleTooltipVisibility() {
     if(IsTooltipOpen) {
+      changeRoute(Tooltip);
       setTooltipVisibility(false);
     } else {
       setTooltipVisibility(true);
     }
   }
 
-  function handleTooltip(data) {
-    api.signupUser(data)
+  function handleSignupTooltip(data) {
+    api.authUser(data, signupConfig)
       .then(res => {
         console.log(res);
         setTooltipParams(tooltipConfig.success);
         toggleTooltipVisibility();
+      })
+      .catch(err => {
+        console.log(err);
+        setTooltipParams(tooltipConfig.error);
+        toggleTooltipVisibility();
+      });
+  }
+
+  function handleSigninTooltip(data) {
+    api.authUser(data, signinConfig)
+      .then(res => {
+        console.log(res);
       })
       .catch(err => {
         console.log(err);
@@ -195,16 +213,18 @@ function App() {
           <Route exact path="/sign-up">
             <Header>
               <NavLink to="/sign-in" className="header__link">Войти</NavLink>
-            </Header>            
+            </Header>
             <TooltipContext.Provider value={Tooltip}>
-              <Register classMod="" formName="signup" title="Регистрация" btnCaption="Зарегистрироваться" isOpen={IsTooltipOpen} onUpdateTooltip={handleTooltip} onHandleVisibility={toggleTooltipVisibility} />
+              <Auth classMod="" formName="signup" title="Регистрация" btnCaption="Зарегистрироваться" isOpen={IsTooltipOpen} onUpdateTooltip={handleSignupTooltip} onHandleVisibility={toggleTooltipVisibility} />
             </TooltipContext.Provider>
           </Route>
           <Route exact path="/sign-in">
             <Header>
               <NavLink to="/sign-up" className="header__link">Регистрация</NavLink>
             </Header>
-            <Login classMod="form_offset_bottom" formName="signin" title="Вход" btnCaption="Войти" />
+            <TooltipContext.Provider value={Tooltip}>
+              <Auth classMod="form_offset_bottom" formName="signin" title="Вход" btnCaption="Войти" isOpen={IsTooltipOpen} onUpdateTooltip={handleSigninTooltip} onHandleVisibility={toggleTooltipVisibility} />
+            </TooltipContext.Provider>
           </Route>
         </Switch>
     </CurrentUserContext.Provider>

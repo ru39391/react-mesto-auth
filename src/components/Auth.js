@@ -2,7 +2,7 @@ import React from 'react';
 import UserForm from './UserForm';
 import TooltipContext from '../contexts/TooltipContext';
 
-function Register({classMod, formName, title, btnCaption, isOpen, onHandleVisibility, onUpdateTooltip}) {
+function Auth({classMod, formName, title, btnCaption, isOpen, onHandleVisibility, onUpdateTooltip}) {
   const tooltip = React.useContext(TooltipContext);
 
   const refs = {
@@ -44,4 +44,4 @@ function Register({classMod, formName, title, btnCaption, isOpen, onHandleVisibi
   );
 }
 
-export default Register;
+export default Auth;
