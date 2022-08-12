@@ -1,0 +1,6 @@
+.form__field_color_white {
+  color: #fff;
+  border-color: #fff;
+  border-width: 0 0 2px;
+  background-color: rgba(0,0,0,0);
+}

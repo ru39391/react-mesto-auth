@@ -1,0 +1,13 @@
+@media (max-width:767px) {
+  .header__logo {
+    width: 104px;
+    height: 24px;
+    object-fit: cover;
+  }
+}
+
+@media (max-width:575px) {
+  .header__logo {
+    order: 2;
+  }
+}

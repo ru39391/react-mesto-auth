@@ -1,0 +1,11 @@
+.form__footer-text {
+  font-size: 14px;
+  line-height: 1.1;
+  margin: 15px 0 0;
+}
+
+@media (max-width:575px) {
+  .form__footer-text {
+    margin-top: 20px;
+  }
+}

@@ -1,0 +1,37 @@
+.header__link {
+  color: #fff;
+  line-height: 1.2;
+  border: 0;
+  padding: 0;
+  margin: 0 24px 0 0;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all .3s ease;
+  background-color: rgba(0,0,0,0);
+}
+
+.header__link:hover {
+  opacity: .6;
+}
+
+.header__link:last-child {
+  margin-right: 0;
+}
+
+@media (max-width:767px) {
+  .header__link {
+    font-size: 14px;
+  }
+}
+
+@media (max-width:575px) {
+  .header__link {
+    order: 2;
+    margin: 0 0 18px;
+  }
+
+  .header__link:last-child {
+    margin-bottom: 0;
+  }
+}

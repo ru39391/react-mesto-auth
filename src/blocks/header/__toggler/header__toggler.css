@@ -1,0 +1,24 @@
+.header__toggler {
+  transition: all .3s ease;
+}
+
+.header__toggler:hover {
+  opacity: .6;
+}
+
+@media (min-width:576px) {
+  .header__toggler {
+    display: none;
+  }
+}
+
+@media (max-width:575px) {
+  .header__toggler {
+    order: 3;
+    width: 24px;
+    height: 18px;
+    border: 0;
+    cursor: pointer;
+    background-color: rgba(0,0,0,0);
+  }
+}

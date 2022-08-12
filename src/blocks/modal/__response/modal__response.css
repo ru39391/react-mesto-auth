@@ -1,0 +1,10 @@
+.modal__response {
+  margin: 0 0 32px;
+  text-align: center;
+}
+
+@media (max-width:575px) {
+  .modal__response {
+    margin: 0 0 40px;
+  }
+}

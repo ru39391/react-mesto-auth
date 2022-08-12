@@ -1,0 +1,8 @@
+.form__footer-link {
+  color: #fff;
+  text-decoration: none;
+}
+
+.form__footer-link:hover {
+  color: rgba(255, 255, 255, .85);
+}

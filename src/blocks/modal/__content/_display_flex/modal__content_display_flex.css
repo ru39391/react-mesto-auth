@@ -1,0 +1,4 @@
+.modal__content_display_flex {
+  display: flex;
+  flex-direction: column;
+}
