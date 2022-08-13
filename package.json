@@ -1,17 +1,17 @@
 {
-  "name": "mesto-react",
+  "name": "react-mesto-auth",
   "version": "0.1.0",
   "private": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ru39391/mesto-react.git"
+    "url": "git+https://github.com/ru39391/react-mesto-auth.git"
   },
   "author": "vladimir_p https://github.com/ru39391",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ru39391/mesto-react/issues"
+    "url": "https://github.com/ru39391/react-mesto-auth/issues"
   },
-  "homepage": "https://github.com/ru39391/mesto-react",
+  "homepage": "https://github.com/ru39391/react-mesto-auth",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
