@@ -136,6 +136,12 @@ function App() {
       });
   }
 
+  /* menu params */
+  const [IsMenuOpen, setMenuOpen] = React.useState(false);
+  function toggleMenu() {
+    IsMenuOpen ? setMenuOpen(false) : setMenuOpen(true);
+  }
+
   /* tooltip params */
   const [Tooltip, setTooltip] = React.useState({
     className: '',
@@ -143,17 +149,6 @@ function App() {
     icon: ''
   });
   const [IsTooltipOpen, setTooltipVisibility] = React.useState(false);
-
-  /* logged status params */
-  const [IsLoggedIn, setLoggedIn] = React.useState(false);
-  function handleLoggedIn() {
-    setLoggedIn(true);
-  };
-
-  const [UserData, setUserData] = React.useState({});
-  function handleUserData(data) {
-    setUserData(data);
-  };
 
   /* tooltip handlers */
   function setTooltipParams(data) {
@@ -174,6 +169,17 @@ function App() {
       setTooltipVisibility(true);
     }
   }
+
+  /* logged status params */
+  const [IsLoggedIn, setLoggedIn] = React.useState(false);
+  function handleLoggedIn() {
+    setLoggedIn(true);
+  };
+
+  const [UserData, setUserData] = React.useState({});
+  function handleUserData(data) {
+    setUserData(data);
+  };
 
   function signUp(data) {
     auth.authUser(data, signupConfig)
@@ -242,12 +248,12 @@ function App() {
         <Switch>
           <ProtectedRoute exact path="/" isLoggedIn={IsLoggedIn}>
             <Header>
-              <div className="header__meta">
+              <div className={`header__meta ${IsMenuOpen && 'header__meta_visible'}`}>
                 <a className="header__link header__link_fs_default" href={`mailto:${UserData.email}`}>{UserData.email}</a>
                 <button className="header__link header__link_fs_default header__link_color_light" type="button" onClick={signOut}>Выйти</button>
               </div>
 
-              <button className="header__toggler" type="button">
+              <button className="header__toggler" type="button" onClick={toggleMenu}>
                 <img className="header__toggler-icon" src={iconShow} alt="Показать меню" />
                 <img className="header__toggler-icon header__toggler-icon_invisible" src={iconClose} alt="Скрыть меню" />
               </button>
