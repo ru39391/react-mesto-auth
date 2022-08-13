@@ -8,10 +8,11 @@ import PopupWithForm from './PopupWithForm';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
-import Auth from './Auth';
+import AuthForm from './AuthForm';
 import ProtectedRoute from './ProtectedRoute';
 
 import api from "../utils/api";
+import auth from "../utils/auth";
 import {tooltipConfig, signupConfig, signinConfig} from '../utils/constants';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 import TooltipContext from '../contexts/TooltipContext';
@@ -175,7 +176,7 @@ function App() {
   }
 
   function signUp(data) {
-    api.authUser(data, signupConfig)
+    auth.authUser(data, signupConfig)
       .then(res => {
         //console.log(res);
         setTooltipParams(tooltipConfig.success);
@@ -189,7 +190,7 @@ function App() {
   }
 
   function signIn(data) {
-    api.authUser(data, signinConfig)
+    auth.authUser(data, signinConfig)
       .then(res => {
         //console.log(res);
         if(res.token) {
@@ -215,7 +216,7 @@ function App() {
     const jwt = localStorage.getItem('token');
     //console.log(jwt);
     if(jwt) {
-      api.getUserToken()
+      auth.getUserToken(jwt)
         .then(res => {
           //console.log(res.data);
           const {_id, email} = res.data;
@@ -264,7 +265,7 @@ function App() {
               <NavLink to="/sign-in" className="header__link">Войти</NavLink>
             </Header>
             <TooltipContext.Provider value={Tooltip}>
-              <Auth classMod="" formName="signup" title="Регистрация" btnCaption="Зарегистрироваться" isOpen={IsTooltipOpen} onUpdateTooltip={signUp} onHandleVisibility={toggleTooltipVisibility} />
+              <AuthForm classMod="" formName="signup" title="Регистрация" btnCaption="Зарегистрироваться" isOpen={IsTooltipOpen} onUpdateTooltip={signUp} onHandleVisibility={toggleTooltipVisibility} />
             </TooltipContext.Provider>
           </Route>
           <Route exact path="/sign-in">
@@ -272,7 +273,7 @@ function App() {
               <NavLink to="/sign-up" className="header__link">Регистрация</NavLink>
             </Header>
             <TooltipContext.Provider value={Tooltip}>
-              <Auth classMod="form_offset_bottom" formName="signin" title="Вход" btnCaption="Войти" isOpen={IsTooltipOpen} onUpdateTooltip={signIn} onHandleVisibility={toggleTooltipVisibility} />
+              <AuthForm classMod="form_offset_bottom" formName="signin" title="Вход" btnCaption="Войти" isOpen={IsTooltipOpen} onUpdateTooltip={signIn} onHandleVisibility={toggleTooltipVisibility} />
             </TooltipContext.Provider>
           </Route>
           <Route>
